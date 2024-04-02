@@ -1,0 +1,12 @@
+﻿services:
+  blazorapp1:
+    image: blazorapp1
+    build:
+      context: .
+      dockerfile: BlazorApp1/BlazorApp1/Dockerfile
+
+  blazorapp1.client:
+    image: blazorapp1.client
+    build:
+      context: .
+      dockerfile: BlazorApp1/BlazorApp1.Client/Dockerfile

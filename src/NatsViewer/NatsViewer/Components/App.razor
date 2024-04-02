@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <base href="/"/>
+    <link rel="stylesheet" href="inter/inter.css" />
+    <link rel="stylesheet" href="app.css"/>
+    <link rel="icon" type="image/png" href="favicon.png"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['InterVariable'],
+                    },
+                    borderRadius: {
+                        'xs': '0.0625rem',
+                    },
+                    colors: {
+                        brand: {
+                            '50': '#eff9ff',
+                            '100': '#dff1ff',
+                            '200': '#b7e5ff',
+                            '300': '#77d1ff',
+                            '400': '#2fbbff',
+                            '500': '#04a3f3',
+                            '600': '#0081d0',
+                            '700': '#0067a8',
+                            '800': '#015486',
+                            '900': '#074873',
+                            '950': '#052e4c',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+    <HeadOutlet/>
+</head>
+
+<body class="bg-gray-100">
+<Routes/>
+<script src="_framework/blazor.web.js"></script>
+</body>
+
+</html>

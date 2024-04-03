@@ -4,7 +4,10 @@
 @rendermode InteractiveServer
 <PageTitle>JetStream Monitoring</PageTitle>
 <Header1>JetStream Monitoring</Header1>
-
+@if (HealthCheckResult?.Healthy == false)
+{
+    <PureBanner Accent="Accent.Warning" Styles="mb-2">NATS server unavailable. Is your service running?</PureBanner>
+}
 <div class="flex flex-col gap-3">
     <div class="flex gap-3">
         <PureCard Title="Streams" Styles="min-h-96">
@@ -77,8 +80,8 @@
             }
         </PureCard>
     </div>
-    <div class="grid grid-cols-2 gap-4 text-sm">
-        <PureCard Title="JetStream Overview">
+    <div class="grid grid-cols-2 gap-3 text-sm">
+        <PureCard Title="JetStream Overview"  Styles="min-h-96">
             <div>
                 <PureLabel>Server ID</PureLabel>
                 <PureText>@Model?.ServerId</PureText>
@@ -153,12 +156,14 @@
 </div>
 
 @code {
+    private HealthCheckResult? HealthCheckResult { get; set; }
     private ExpandedJetStreamInfo? Model { get; set; }
     private StreamDetail? SelectedStream { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         Model = await Client.GetExpandedJetStreamInfo();
+        HealthCheckResult = await Client.HealthCheck();
     }
 
 }

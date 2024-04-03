@@ -3,19 +3,58 @@ using System.Text.Json.Serialization;
 
 namespace NatsViewer.Client;
 
-public class NatsMonitorClient(HttpClient client)
+public class NatsMonitorClient(ILogger<NatsMonitorClient> log, HttpClient client)
 {
+    public async Task<HealthCheckResult> HealthCheck()
+    {
+        try
+        {
+            var response = await client.GetAsync("/healthz");
+            return new HealthCheckResult
+            {
+                Healthy = response.IsSuccessStatusCode
+            };
+        }
+        catch (Exception ex)
+        {
+            log.LogError(ex, "Failed to health check");
+            return new HealthCheckResult
+            {
+                Healthy = false
+            };
+        }
+    }
+    
     public async Task<ServerInfo?> GetServerInfo()
     {
-        var json = await client.GetFromJsonAsync<ServerInfo>("/varz");
-        return json;
+        try
+        {
+            return await client.GetFromJsonAsync<ServerInfo>("/varz");
+        }
+        catch (Exception ex)
+        {
+            log.LogError(ex, "Failed to get server info");
+            return null;
+        }
     }
     
     public async Task<ExpandedJetStreamInfo?> GetExpandedJetStreamInfo()
     {
-        var json = await client.GetFromJsonAsync<ExpandedJetStreamInfo>("/jsz?consumers=true");
-        return json;
+        try
+        {
+            return await client.GetFromJsonAsync<ExpandedJetStreamInfo>("/jsz?consumers=true");
+        }
+        catch (Exception ex)
+        {
+            log.LogError(ex, "Failed to get expanded jetstream info");
+            return null;
+        }
     }
+}
+
+public record HealthCheckResult
+{
+    public bool Healthy { get; set; }
 }
 public record ServerInfo
 {

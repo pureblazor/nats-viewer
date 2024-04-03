@@ -5,6 +5,10 @@
 <PageTitle>Overview</PageTitle>
 <Header1>Overview</Header1>
 
+@if (HealthCheckResult?.Healthy == false)
+{
+<PureBanner Accent="Accent.Warning" Styles="mb-2">NATS server unavailable. Is your service running?</PureBanner>
+}
 <div class="grid grid-cols-2 gap-4 text-sm">
 <PureCard Title="Server Info">
     <div>
@@ -261,11 +265,13 @@
 </div>
 
 @code {
+    private HealthCheckResult? HealthCheckResult { get; set; }
     private ServerInfo? ServerInfo { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         ServerInfo = await Client.GetServerInfo();
+        HealthCheckResult = await Client.HealthCheck();
         // await using var nats = new NatsConnection();
         // var js = new NatsJSContext(nats);
         //
